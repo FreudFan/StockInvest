@@ -1,34 +1,22 @@
 <template>
     <div>
-      用户管理
       <el-container>
         <el-header style="padding: 0px;display:flex;justify-content:space-between;align-items: center">
-          <div style="display: inline">
+          <div style="display: inline; margin-left: 20px;">
             姓名:
             <el-autocomplete
               v-model="queryName"
               :fetch-suggestions="querySearchAsync"
+              @select="selectQueryName"
               placeholder="请输入内容"
               prefix-icon="el-icon-search"
               size="mini"
-              style="width: 150px;margin: 10px;padding: 0px;">
               ></el-autocomplete>
             <el-button type="primary" size="mini" style="margin-left: 5px" icon="el-icon-search"
                        @click="loadEmps">搜索
             </el-button>
           </div>
-          <div style="margin-left: 5px;margin-right: 20px;display: inline">
-            <el-upload
-              :show-file-list="false"
-              accept="application/vnd.ms-excel"
-              action="/employee/basic/importEmp"
-              :on-success="fileUploadSuccess"
-              :on-error="fileUploadError" :disabled="fileUploadBtnText=='正在导入'"
-              :before-upload="beforeFileUpload" style="display: inline">
-              <el-button size="mini" type="success" :loading="fileUploadBtnText=='正在导入'"><i class="fa fa-lg fa-level-up"
-                                                                                            style="margin-right: 5px"></i>{{fileUploadBtnText}}
-              </el-button>
-            </el-upload>
+          <div style="margin-left: 20px;margin-right: 20px;display: inline">
             <el-button type="success" size="mini" @click="exportEmps">
               <i class="fa fa-lg fa-level-down" style="margin-right: 5px"></i>导出数据
             </el-button>
@@ -38,7 +26,7 @@
             </el-button>
           </div>
         </el-header>
-        <el-main style="padding-left: 0px;padding-top: 0px">
+        <el-main style="padding-top: 0px;">
           <el-table
           :data="Employee"
           v-loading="tableLoading"
@@ -136,7 +124,7 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage"
-            :page-sizes="[5, 10, 20, 50, 100]"
+            :page-sizes="[1, 5, 10, 20, 50, 100]"
             :page-size="20"
             layout="total, sizes, prev, pager, next, jumper"
             :total="totalCount">
@@ -151,22 +139,22 @@
             :title="dialogTitle"
             style="padding: 0px; text-align: left; min-width: 1280px;"
             :close-on-click-modal="false"
-            :visible.sync="dialogVisible"
+            :visible.sync="registerVisible"
             width="70%">
             <el-row>
-              <el-col :span="8">
-                <div>
-                  <el-form-item label="姓名:" prop="name">
-                    <el-input prefix-icon="el-icon-edit" v-model="emp.name" size="middle" style="width: 150px"
-                              placeholder="请输入员工姓名"></el-input>
-                  </el-form-item>
-                </div>
-              </el-col>
               <el-col :span="8">
                 <div>
                   <el-form-item label="用户名:" prop="userName">
                     <el-input prefix-icon="el-icon-edit" v-model="emp.userName" size="middle" style="width: 165px"
                               placeholder="请输入用户名"></el-input>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="8">
+                <div>
+                  <el-form-item label="姓名:" prop="name">
+                    <el-input prefix-icon="el-icon-edit" v-model="emp.name" size="middle" style="width: 150px"
+                              placeholder="请输入员工姓名"></el-input>
                   </el-form-item>
                 </div>
               </el-col>
@@ -289,7 +277,7 @@
         showAddEmpView() {
           this.dialogTitle = "添加员工";
           this.emptyEmpData();
-          this.dialogVisible = true;
+          this.registerVisible = true;
         },
         showEditEmpView(row) {
           console.log(row);
@@ -301,7 +289,7 @@
             if (resp && resp.status == 200) {
               let data = resp.data;
               _this.emp = data;
-              this.dialogVisible = true;
+              this.registerVisible = true;
             }
           })
         },
@@ -319,7 +307,7 @@
         loadEmps(){
           let _this = this;
           this.tableLoading = true;
-          let getParam = "currentPage=" + this.currentPage + "&currentSize=" + this.currentSize;
+          let getParam = "currentPage=" + this.currentPage + "&currentSize=" + this.currentSize + "&queryName=" + this.queryName;
           this.getRequest("/employee/getEmp?" + getParam ).then(resp=> {
             this.tableLoading = false;
             if (resp && resp.status == 200) {
@@ -349,7 +337,7 @@
           this.loadEmps();
         },
         cancelEidt(){
-          this.dialogVisible = false;
+          this.registerVisible = false;
           this.emptyEmpData();
         },
         emptyEmpData(){
@@ -397,13 +385,16 @@
         },
         querySearchAsync(queryString, cb) {
           let _this = this;
-          this.queryName = queryString;
-          this.postRequest("/employee/querySearchEmp", this.queryName).then(resp=> {
+          // this.queryName = queryString;
+          this.postRequest("/employee/querySearchEmp", {"queryName": queryString} ).then(resp=> {
             if (resp && resp.status == 200) {
-              let data = resp.data;
-              cb(data.emps);
+              let data = resp.data.emps;
+              cb(data);
             }
           })
+        },
+        selectQueryName(item) {
+          this.queryName = item.name;
         },
         exportEmps() {
 
@@ -448,7 +439,7 @@
           areas: [],
           gender: [{"value":0,"name":"男"},{"value":1,"name":"女"}],
           enableStatus: [{"value":0,"name":"离职"},{"value":1,"name":"在职"}],
-          dialogVisible: false,
+          registerVisible: false,
           dialogTitle: '',
           rules: {
             userName: [{required: true, message: '请输入用户名', trigger: 'blur'}],

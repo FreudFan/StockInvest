@@ -11,6 +11,7 @@ import qs from 'qs'
 import {deleteRequest, getRequest, postRequest, putRequest} from "@/utils/api";
 import {initMenu} from "@/utils/utils";
 import 'font-awesome/css/font-awesome.min.css'
+import '../static/icon/iconfont.css'
 
 Vue.config.productionTip = false;
 Vue.prototype.$axios = Axios;
@@ -82,6 +83,16 @@ function changeWinSize() {
   if ( asideDiv != null ) {
     let menuHeight = winHeight - 50;
     document.getElementById("app-aside").style.cssText = 'height: ' + menuHeight + "px !important";
+  }
+  let appViewDiv = document.getElementById("app-view");
+  if ( appViewDiv != null ) {
+    let menuHeight = winHeight - 50 - 100;
+    document.getElementById("app-view").style.cssText = 'height: ' + menuHeight + "px !important";
+  }
+  let pageAsideDiv = document.getElementById("pageAside");
+  if ( pageAsideDiv != null ) {
+    let menuHeight = winHeight - 50 - 100;
+    document.getElementById("pageAside").style.cssText = 'height: ' + menuHeight + "px !important";
   }
   document.getElementById("app").style.cssText = 'height: ' + winHeight + "px !important";
 }

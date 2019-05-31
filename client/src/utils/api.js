@@ -24,6 +24,7 @@ import {Message} from 'element-ui'
   });
 */
 
+let _this = this;
 
 axios.interceptors.request.use(config=> {
   return config;

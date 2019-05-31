@@ -12,11 +12,47 @@
         <el-form-item>
           <el-button type="primary" @click="onLogin">登录</el-button>
           <el-button @click="toRegister">注册</el-button>
+          <el-button type="danger" @click="onDataSource">数据源</el-button>
         </el-form-item>
       </el-form>
       <!--<router-link to="/register">register</router-link>-->
       <!--<router-link :to="{name: 'Register'}">register</router-link>-->
     </div>
+
+    <el-form :model="DataSource" ref="setDataSource">
+      <div style="text-align: center;">
+        <el-dialog
+          :title="dialogTitle"
+          :visible.sync="dataSourceVisible"
+          width="350px"
+        >
+          <el-form-item label="数据库名称:">
+            <el-input placeholder="dbname" v-model="DataSource.DBName" style="width: 180px" ></el-input>
+          </el-form-item>
+          <el-form-item label="数据库地址:">
+            <el-input placeholder="127.0.0.1:3306" v-model="DataSource.DBUrl" style="width: 180px" ></el-input>
+          </el-form-item>
+          <el-form-item label="数据库用户名:">
+            <el-input placeholder="root" v-model="DataSource.DBUser" style="width: 165px" ></el-input>
+          </el-form-item>
+          <el-form-item label="数据库密码:">
+            <el-input placeholder="password" v-model="DataSource.DBPassword" style="width: 180px" ></el-input>
+          </el-form-item>
+          <span style="text-align: center; line-height: 50px">
+            <el-row>
+              <el-button type="success" size="medium " @click="testDataSource('setDataSource')">测试数据源连接</el-button>
+            </el-row>
+            <el-row>
+              <el-button type="danger" size="medium " @click="setDataSource('setDataSource')">更换系统数据源</el-button>
+            </el-row>
+            <el-row>
+              <el-button type="danger" size="medium " @click="restoreDataSource()">重置默认数据源</el-button>
+            </el-row>
+          </span>
+        </el-dialog>
+      </div>
+    </el-form>
+
 
     <el-form :model="Employee" :rules="rules" ref="addEmpForm" style="margin: 0px; padding: 0px;">
       <div style="text-align: left;">
@@ -24,7 +60,7 @@
           :title="dialogTitle"
           style="padding: 0px; min-width: 1250px;"
           :close-on-click-modal="false"
-          :visible.sync="dialogVisible"
+          :visible.sync="registerVisible"
           width="70%">
           <el-row>
             <el-col :span="8">
@@ -162,8 +198,9 @@
           userName: '',
           password: ''
         },
-        dialogVisible: false,
+        registerVisible: false,
         dialogTitle: '',
+        dataSourceVisible: false,
         areas: [],
         positions: [],
         Employee: {
@@ -183,6 +220,12 @@
           address: [],
           area: ''
         },
+        DataSource: {
+          DBName: '',
+          DBUrl: '',
+          DBUser: '',
+          DBPassword: ''
+        },
         rules: {
           userName: [{required: true, message: '请输入用户名', trigger: 'blur'}],
           name: [{required: true, message: '请输入姓名', trigger: 'blur'}],
@@ -200,7 +243,7 @@
     methods: {
       onLogin() { //登录
         let _this = this;
-        this.postRequest( '/config/login', this.login )
+        this.postRequest( '/login/login', this.login )
           .then( res => {
             if ( res && res.status == 200 ) {
               let msg = res.data;
@@ -220,13 +263,52 @@
       },
       toRegister() {  //注册用户
         this.dialogTitle = "注册用户";
-        this.dialogVisible = true;
+        this.registerVisible = true;
         // this.getAddress();
         // this.$router.push('/register')
       },
+      onDataSource() {
+        this.dialogTitle = "配置数据源地址";
+        this.dataSourceVisible = true;
+      },
+      testDataSource() {
+        let _this = this;
+        this.postRequest('/login/testDataSource', this.DataSource).then((res) => {
+          if ( res.data == 'ok' ) {
+            _this.$elMessage('连接测试通过', 'success');
+            return true;
+          } else {
+            _this.$elMessage('连接失败', 'error');
+            return false;
+          }
+        });
+      },
+      restoreDataSource() {
+        let _this = this;
+        this.postRequest('/login/restoreDataSource', {}).then((res) => {
+          if ( res.data == 'ok' ) {
+            _this.$elMessage('重置数据源成功', 'success');
+            return true;
+          } else {
+            _this.$elMessage('重置失败', 'error');
+            return false;
+          }
+        });
+      },
+      setDataSource() {
+        let _this = this;
+        if ( this.testDataSource() ) {
+          this.postRequest('/login/changeDataSource', this.DataSource).then((res) => {
+            if (res.data == 'ok') {
+              _this.$elMessage('更换数据源成功', 'success');
+            } else {
+              _this.$elMessage('更换数据源失败', 'error');
+            }
+          });
+        }
+      },
       cancelEidt() { //取消注册，注册页面初始化
-        this.dialogVisible = false;
-        // Object.assign(this.$data, this.$options.data)
+        this.registerVisible = false;
         this.emptyEmpData();
       },  //更改地址复选框选项
       handleChange(value) {
@@ -240,7 +322,7 @@
               if ( res.data == 'ok' ) {
                 // _this.$router.replace('/');
                 _this.$elMessage('注册成功，请登录！', 'success');
-                this.dialogVisible = false;
+                this.registerVisible = false;
                 this.emptyEmpData();
               } else {
                 _this.$elMessage('有相同用户名，请重新输入', 'warning');

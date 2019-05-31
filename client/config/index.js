@@ -13,6 +13,7 @@ module.exports = {
     proxyTable: {
       '/': {
         target: "http://localhost:9000",
+        // target: "http://106.14.120.166:9000",
         pathRewrite: {"^/": ""}
       }
     },
