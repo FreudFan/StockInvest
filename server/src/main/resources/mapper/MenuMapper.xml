@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fmy.server.dao.mapper.MenuMapper">
+
+    <resultMap id="BaseResultMap" type="com.fmy.server.dao.entity.Menu">
+        <id column="id" property="objid" jdbcType="INTEGER"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="path" property="path" jdbcType="VARCHAR"/>
+        <result column="component" property="component" javaType="java.lang.Object"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="iconCls" property="iconCls" jdbcType="VARCHAR"/>
+        <result column="keepAlive" property="keepAlive" jdbcType="BIT"/>
+        <result column="parentId" property="parentId" jdbcType="INTEGER"/>
+
+        <collection property="children" ofType="com.fmy.server.dao.entity.Menu">
+            <id column="id2" property="objid"/>
+            <result column="path2" property="path" jdbcType="VARCHAR"/>
+            <result column="component2" property="component" jdbcType="VARCHAR"/>
+            <result column="name2" property="name" jdbcType="VARCHAR"/>
+            <result column="iconCls2" property="iconCls" jdbcType="VARCHAR"/>
+            <collection property="children" ofType="com.fmy.server.dao.entity.Menu">
+                <id column="id3" property="id"/>
+                <result column="name3" property="name" jdbcType="VARCHAR"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <select id="getAllMenu" parameterType="Long" resultMap="BaseResultMap">
+      select m1.`objid`,m1.`path`,m1.`component`,m1.`iconCls`,m1.`name`,m1.`requireAuth`,
+             m2.`component` as component2,m2.`iconCls` as iconCls2,m2.`keepAlive` as keepAlive2,m2.`name` as name2,m2.`path` as path2,m2.`requireAuth` as requireAuth2
+             from MENU m1,MENU m2 where m1.`objid` = m2.`parentId` and m1.`objid`!=1 and m2.`enabled`= 1 order by m1.`objid`, m2.`objid`
+    </select>
+
+</mapper>

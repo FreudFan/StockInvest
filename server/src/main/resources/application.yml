@@ -1,0 +1,41 @@
+server:
+  port: 9000
+  tomcat:
+    uri-encoding: UTF-8
+    max-http-post-size: -1
+    max-http-header-size: 8192
+  connection-timeout: 20000
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://106.14.120.166:3306/StockInvest?characterEncoding=UTF-8&useUnicode=true&useSSL=false&serverTimezone=Hongkong
+#    url: jdbc:mysql://47.101.61.22:3306/xianzhi?characterEncoding=UTF-8&useUnicode=true&useSSL=false&serverTimezone=Hongkong
+    username: root
+    password: d123456
+
+
+  http:
+    #配置字符编码
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+  jpa:
+    hibernate:
+      ddl-auto: none  #不更新或创建数据表结构
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+    show-sql: true  #控制台显示sql
+    database-platform: org.hibernate.dialect.MySQL57Dialect  #不加这句则默认为myisam引擎
+
+
+#mybatis:
+#  mapper-locations: classpath:mapper/*.xml
+
+logging:
+#  file: C:/log/stockInvest/log.log
+  file: ./log/log.log
+  level:
+    com.fmy.server: info
