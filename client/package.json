@@ -1,7 +1,7 @@
 {
   "name": "client",
   "version": "1.0.0",
-  "description": "投研系统前端",
+  "description": "大数据管理系统前端",
   "author": "FreudFan",
   "private": true,
   "scripts": {

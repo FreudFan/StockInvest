@@ -1,7 +1,7 @@
 <template>
   <div class="login_bg">
     <div class="Login">
-      <h2>欢迎使用投研系统</h2>
+      <h2>欢迎使用大数据管理系统</h2>
       <el-form ref="form" :model="login" label-width="80px">
         <el-form-item label="用户名">
           <el-input placeholder="请输入用户名" v-model="login.userName" maxlength="20" ></el-input>
@@ -111,10 +111,10 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="确认密码:" prop="checkPass">
-                <el-input type="password"  autocomplete="off" style="width: 180px"
-                          placeholder="请再次输入密码"></el-input>
-              </el-form-item>
+              <!--<el-form-item label="确认密码:" prop="checkPass">-->
+                <!--<el-input type="password"  autocomplete="off" style="width: 180px"-->
+                          <!--placeholder="请再次输入密码"></el-input>-->
+              <!--</el-form-item>-->
             </el-col>
           </el-row>
           <el-row>
@@ -276,7 +276,7 @@
         this.postRequest('/login/testDataSource', this.DataSource).then((res) => {
           if ( res.data == 'ok' ) {
             _this.$elMessage('连接测试通过', 'success');
-            return true;
+            return "true";
           } else {
             _this.$elMessage('连接失败', 'error');
             return false;
@@ -297,15 +297,14 @@
       },
       setDataSource() {
         let _this = this;
-        if ( this.testDataSource() ) {
-          this.postRequest('/login/changeDataSource', this.DataSource).then((res) => {
-            if (res.data == 'ok') {
-              _this.$elMessage('更换数据源成功', 'success');
-            } else {
-              _this.$elMessage('更换数据源失败', 'error');
-            }
-          });
-        }
+        this.testDataSource();
+        this.postRequest('/login/changeDataSource', this.DataSource).then((res) => {
+          if (res.data == 'ok') {
+            _this.$elMessage('更换数据源成功', 'success');
+          } else {
+            _this.$elMessage('更换数据源失败', 'error');
+          }
+        });
       },
       cancelEidt() { //取消注册，注册页面初始化
         this.registerVisible = false;

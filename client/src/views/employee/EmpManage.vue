@@ -125,7 +125,7 @@
             @current-change="handleCurrentChange"
             :current-page="currentPage"
             :page-sizes="[1, 5, 10, 20, 50, 100]"
-            :page-size="20"
+            :page-size="5"
             layout="total, sizes, prev, pager, next, jumper"
             :total="totalCount">
           </el-pagination>
@@ -289,6 +289,7 @@
             if (resp && resp.status == 200) {
               let data = resp.data;
               _this.emp = data;
+              _this.emp.userName = empUserName;
               this.registerVisible = true;
             }
           })
@@ -417,7 +418,7 @@
           tableLoading: false,
           totalCount: -1,
           currentPage: 1,
-          currentSize: 20,
+          currentSize: 5,
           fileUploadBtnText: '导入数据',
           faangledoubleup: 'fa-angle-double-up',
           faangledoubledown: 'fa-angle-double-down',
