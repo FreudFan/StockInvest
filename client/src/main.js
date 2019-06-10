@@ -35,7 +35,7 @@ router.beforeEach((to, from, next)=> {
     }
     let name = store.state.user.name;
     if (name == '未登录') {
-      Message.success({message: '欢迎访问投研系统，请登录！'});
+      Message.success({message: '欢迎访问管理系统，请登录！'});
       if (to.meta.requireAuth || to.name == null) {
         next({path: '/', query: {redirect: to.path}})
       } else {
