@@ -13,9 +13,6 @@ import java.util.Map;
 @Service
 public class EmployeeUtil {
 
-    private EmployeeUtil() {
-    }
-
     @Resource
     private HttpSession session;
     @Resource
@@ -56,7 +53,11 @@ public class EmployeeUtil {
      * 清除当前用户session
      */
     public void invalidEmployeeSession() {
-        session.removeAttribute("loginUser");
+        try {
+            session.removeAttribute("loginUser");
+        } catch (Exception ignored) {
+
+        }
     }
 
     public void invalidAllSession() {

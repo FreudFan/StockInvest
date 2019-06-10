@@ -20,7 +20,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginHandlerInterceptor).addPathPatterns("/**")
-                .excludePathPatterns("/login/**","/config/**");
+                .excludePathPatterns("/login/**","/config/**","/employee/**");
     }
 
     // 用来允许接受CORS的跨域请求

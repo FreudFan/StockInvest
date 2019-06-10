@@ -34,6 +34,7 @@ public interface EmployeeMapper {
      * @param param
      * @return
      */
+    @Options(useGeneratedKeys = true, keyProperty = "objid")
     @Select("select * from EMPLOYEE where user_name = #{userName} and password = #{password} ")
     public Employee loginByUserNameAndPassword(Map param);
 

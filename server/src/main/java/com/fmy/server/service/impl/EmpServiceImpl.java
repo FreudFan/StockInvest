@@ -62,7 +62,7 @@ public class EmpServiceImpl implements IEmpService {
         List<Map<String,Object>> maps = employeeMapper.getEmployeeByPage(param);
         for ( Map<String,Object> map: maps ) {
             EmployeeUtil.getGenderByMap(map);
-            String birthday = MapUtils.getString(map, "birthday").substring(0, 10);
+            String birthday = MapUtils.getString(map, "birthday", "          ").substring(0, 10);
             map.put("birthday", birthday);
         }
         return maps;

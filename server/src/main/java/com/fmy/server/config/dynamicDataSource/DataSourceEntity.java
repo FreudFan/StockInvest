@@ -1,11 +1,13 @@
 package com.fmy.server.config.dynamicDataSource;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.fmy.server.common.EmployeeUtil;
 import com.fmy.server.config.dynamicDataSource.dataSource.DynamicDataSource;
 import org.apache.commons.collections4.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Resource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.HashMap;
@@ -16,10 +18,12 @@ public class DataSourceEntity {
     private static Logger logger = LoggerFactory.getLogger(DataSourceEntity.class);
 
     public static void setDynamicDataSource( Map dataSource ) throws Exception {
-        String DBName = MapUtils.getString(dataSource, "DBName", "");
-        String DBUrl = MapUtils.getString(dataSource, "DBUrl", "");
-        String DBUser = MapUtils.getString(dataSource, "DBUser", "");
-        String DBPassword = MapUtils.getString(dataSource, "DBPassword", "");
+        EmployeeUtil employeeUtil = new EmployeeUtil();
+        employeeUtil.invalidEmployeeSession();
+        String DBName = MapUtils.getString(dataSource, "DBName", "").trim();
+        String DBUrl = MapUtils.getString(dataSource, "DBUrl", "").trim();
+        String DBUser = MapUtils.getString(dataSource, "DBUser", "").trim();
+        String DBPassword = MapUtils.getString(dataSource, "DBPassword", "").trim();
 
         if ( !DBName.equals("") && !DBUrl.equals("") && !DBUser.equals("") && !DBPassword.equals("") ) {
             logger.info("正在设置自定义数据源" + dataSource.toString());
@@ -42,10 +46,10 @@ public class DataSourceEntity {
     }
 
     public static String testDataSource( Map dataSource ) throws Exception {
-        String DBName = MapUtils.getString(dataSource, "DBName", "");
-        String DBUrl = MapUtils.getString(dataSource, "DBUrl", "");
-        String DBUser = MapUtils.getString(dataSource, "DBUser", "");
-        String DBPassword = MapUtils.getString(dataSource, "DBPassword", "");
+        String DBName = MapUtils.getString(dataSource, "DBName", "").trim();
+        String DBUrl = MapUtils.getString(dataSource, "DBUrl", "").trim();
+        String DBUser = MapUtils.getString(dataSource, "DBUser", "").trim();
+        String DBPassword = MapUtils.getString(dataSource, "DBPassword", "").trim();
 
         if ( !DBName.equals("") && !DBUrl.equals("") && !DBUser.equals("") && !DBPassword.equals("") ) {
             try {

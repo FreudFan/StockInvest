@@ -27,6 +27,8 @@ public class DynamicDataSourceAspect {
         Map dataSources = DynamicDataSource.getInstance().getDataSourceMap();
         if ( dataSources.get("dynamicDataSource-slave") != null ) {
             DataSourceContextHolder.setDBType("dynamicDataSource-slave");
+        } else {
+            DataSourceContextHolder.setDBType("default");
         }
     }
 

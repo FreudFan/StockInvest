@@ -1,10 +1,11 @@
 
-INSERT INTO `MENU_ROLE` VALUES ('1', '1', '5', '1');
-INSERT INTO `MENU_ROLE` VALUES ('2', '2', '5', '1');
-INSERT INTO `MENU_ROLE` VALUES ('3', '3', '5', '1');
-INSERT INTO `MENU_ROLE` VALUES ('4', '4', '5', '1');
-INSERT INTO `MENU_ROLE` VALUES ('5', '5', '5', '1');
-INSERT INTO `MENU_ROLE` VALUES ('6', '6', '5', '1');
+INSERT INTO `MENU_ROLE` VALUES ('1', '1', '1', '1');
+INSERT INTO `MENU_ROLE` VALUES ('2', '2', '1', '1');
+INSERT INTO `MENU_ROLE` VALUES ('3', '3', '1', '1');
+INSERT INTO `MENU_ROLE` VALUES ('4', '4', '1', '1');
+INSERT INTO `MENU_ROLE` VALUES ('5', '5', '1', '1');
+INSERT INTO `MENU_ROLE` VALUES ('6', '6', '1', '1');
+
 
 INSERT INTO `MENU` VALUES ('1', '/', null, null, '所有', null, null, null, '0', '1');
 INSERT INTO `MENU` VALUES ('2', '/', '/home', 'Home', '投资研究', 'fa fa-user-circle-o', null, '1', '1', '1');
