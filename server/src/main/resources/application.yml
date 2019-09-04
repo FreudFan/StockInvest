@@ -9,8 +9,8 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://106.14.120.166:3306/StockInvest?characterEncoding=UTF-8&useUnicode=true&useSSL=false&serverTimezone=Hongkong
-#    url: jdbc:mysql://47.101.61.22:3306/xianzhi?characterEncoding=UTF-8&useUnicode=true&useSSL=false&serverTimezone=Hongkong
+#    url: jdbc:mysql://106.14.120.166:3306/StockInvest?characterEncoding=UTF-8&useUnicode=true&useSSL=false&serverTimezone=Hongkong
+    url: jdbc:mysql://127.0.0.1:3306/StockInvest?characterEncoding=UTF-8&useUnicode=true&useSSL=false&serverTimezone=Hongkong
     username: root
     password: d123456
 
