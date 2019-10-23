@@ -1,7 +1,7 @@
 <template>
   <div class="login_bg">
     <div class="Login">
-      <h2>欢迎使用大数据管理系统</h2>
+      <h2>欢迎使用管理系统</h2>
       <el-form ref="form" :model="login" label-width="80px">
         <el-form-item label="用户名">
           <el-input placeholder="请输入用户名" v-model="login.userName" maxlength="20" ></el-input>
