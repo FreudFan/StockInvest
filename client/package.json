@@ -13,7 +13,7 @@
     "axios": "^0.18.0",
     "element-ui": "^2.7.2",
     "font-awesome": "^4.7.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "vue": "^2.5.2",
     "vue-axios": "^2.1.4",
     "vue-material": "^1.0.0-beta-10.2",
